@@ -1,0 +1,29 @@
+{
+    "name": "mmo/request-collector",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Mmo\\RequestCollector\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Mmo\\RequestCollector\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Marcin Morawski",
+            "email": "marcin@morawskim.pl"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": "^7.4|^8.0"
+    },
+    "require-dev": {
+        "guzzlehttp/guzzle": "^6.5",
+        "phpunit/phpunit": "^8.5"
+    }
+}
