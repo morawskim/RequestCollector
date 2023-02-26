@@ -45,4 +45,24 @@ class GuzzleMiddlewareTest extends TestCase
         $storedItems = $requestCollector->getAllStoredItems();
         $this->assertCount(0, $storedItems);
     }
+
+    public function testOptionToDisableRequestCollector(): void
+    {
+        $requestCollector = new RequestCollector();
+        $requestCollector->enable();
+        $requestCollector->store('foo', 'bar');
+
+        $handler = new MockHandler([new Response(404)]);
+        $stack = new HandlerStack($handler);
+        $stack->push(GuzzleMiddleware::requestCollector($requestCollector));
+        $comp = $stack->resolve();
+        $promise = $comp(
+            new Request('PUT', 'https://www.google.com'),
+            [GuzzleMiddleware::GUZZLE_OPTION_SKIP_REQUEST_COLLECTOR => true]
+        );
+        $promise->wait(false);
+
+        $storedItems = $requestCollector->getAllStoredItems();
+        $this->assertCount(1, $storedItems);
+    }
 }
