@@ -23,8 +23,12 @@
         "php": "^7.4|^8.0",
         "ext-mbstring": "*"
     },
+    "suggest": {
+        "ext-curl": "*"
+    },
     "require-dev": {
         "guzzlehttp/guzzle": "^6.5",
-        "phpunit/phpunit": "^8.5"
+        "phpunit/phpunit": "^8.5",
+        "ext-curl": "*"
     }
 }
