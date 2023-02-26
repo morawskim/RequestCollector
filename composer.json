@@ -9,7 +9,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Mmo\\RequestCollector\\": "tests/"
+            "Mmo\\RequestCollector\\": ["tests/Unit", "tests/Acceptance"]
         }
     },
     "authors": [
