@@ -58,6 +58,46 @@ class GuzzleMiddlewareAcceptanceTest extends TestCase
         $this->assertCount(1, $requestCollector->getAllStoredItems());
     }
 
+    public function testPostRequest(): void
+    {
+        $requestCollector = new RequestCollector();
+        $requestCollector->enable();
+        $client = $this->getHttpClient($requestCollector);
+
+        $client->request('POST', 'https://jsonplaceholder.typicode.com/comments', [
+            'json' => [
+                "postId" => 1,
+                "id" => 11,
+                "name" => "id labore ex et quam laborum",
+                "email" => "Eliseo@gardner.biz",
+                "body" => "laudantium enim quasi est quidem magnam voluptate ipsam eos\ntempora quo necessitatibus\ndolor quam autem quasi\nreiciendis et nam sapiente accusantium"
+            ]
+        ]);
+
+        $this->assertCount(1, $requestCollector->getAllStoredItems());
+        $this->assertStringEqualsFile(
+            __DIR__ . '/_fixture/guzzle-post-request.txt',
+            str_replace("\r", '', $requestCollector->getAllStoredItems()[0]->getRequest())
+        );
+        $this->assertStringEqualsFile(
+            __DIR__ . '/_fixture/guzzle-post-response.txt',
+            preg_replace(
+                [
+                    '/Date:.*$/m',
+                    '/^Age:.*$/m',
+                    '/^Server-Timing:.*$/m',
+                    '/^Report-To:.*$/m',
+                    '/^CF-RAY:.*$/m',
+                    '/^X-Ratelimit-Limit:.*$/m',
+                    '/^X-Ratelimit-Remaining:.*$/m',
+                    '/^X-Ratelimit-Reset:.*$/m',
+                ],
+                '',
+                str_replace("\r", '', $requestCollector->getAllStoredItems()[0]->getResponse())
+            )
+        );
+    }
+
     private function getHttpClient(RequestCollector $requestCollector): Client
     {
         $stack = new HandlerStack();
