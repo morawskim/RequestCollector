@@ -1,0 +1,12 @@
+version: '3.4'
+services:
+  cli:
+    image: thecodingmachine/php:7.4-v4-cli
+    command: bash
+    volumes:
+      - ./:/app
+    user: ${MY_UID:-1000}
+    tty: true
+    working_dir: /app
+    environment:
+      PHP_EXTENSIONS: xdebug
