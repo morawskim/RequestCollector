@@ -2,8 +2,13 @@
 
 namespace Mmo\RequestCollector;
 
+use Mmo\RequestCollector\SanitizeData\ArrayKeyValuesSanitizeData;
+use Mmo\RequestCollector\SanitizeData\JsonStringSanitizeData;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @requires extension curl
+ */
 class CurlAcceptanceTest extends TestCase
 {
     public function testCurlGet(): void
@@ -28,7 +33,7 @@ class CurlAcceptanceTest extends TestCase
         );
     }
 
-    public function testCurlPost(): void
+    public function testCurlPostWithSanitizeData(): void
     {
         $url = 'https://jsonplaceholder.typicode.com/comments';
         $fields = [
@@ -53,8 +58,12 @@ class CurlAcceptanceTest extends TestCase
         $requestCollector->enable();
         $requestCollector->lazyStore(static function () use ($url, $fields, $data) {
             return new RequestResponseItem(
-                sprintf("POST %s\n\n%s", $url, json_encode($fields)),
-                $data
+                sprintf(
+                    "POST %s\n\n%s",
+                    $url,
+                    json_encode((new ArrayKeyValuesSanitizeData(['email']))->sanitizeData($fields))
+                ),
+                (new JsonStringSanitizeData(['email']))->sanitizeData($data)
             );
         });
 
