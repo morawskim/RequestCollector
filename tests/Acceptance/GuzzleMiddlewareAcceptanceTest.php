@@ -4,7 +4,12 @@ namespace Mmo\RequestCollector;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Psr7\Utils;
+use Mmo\RequestCollector\SanitizeData\JsonStringSanitizeData;
+use Mmo\RequestCollector\SanitizeData\PsrMessageSanitizeDataInterface;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 
 use function GuzzleHttp\choose_handler;
 
@@ -71,7 +76,8 @@ class GuzzleMiddlewareAcceptanceTest extends TestCase
                 "name" => "id labore ex et quam laborum",
                 "email" => "Eliseo@gardner.biz",
                 "body" => "laudantium enim quasi est quidem magnam voluptate ipsam eos\ntempora quo necessitatibus\ndolor quam autem quasi\nreiciendis et nam sapiente accusantium"
-            ]
+            ],
+            GuzzleMiddleware::GUZZLE_OPTION_SANITIZE_SERVICE => $this->createPsrMessageSanitizeService(),
         ]);
 
         $this->assertCount(1, $requestCollector->getAllStoredItems());
@@ -105,5 +111,31 @@ class GuzzleMiddlewareAcceptanceTest extends TestCase
         $stack->push(GuzzleMiddleware::requestCollector($requestCollector));
 
         return new Client(['handler' => $stack, 'headers' => ['User-Agent' => 'RequestCollector/test']]);
+    }
+
+    private function createPsrMessageSanitizeService(): PsrMessageSanitizeDataInterface
+    {
+        return new class(new JsonStringSanitizeData(['email'])) implements PsrMessageSanitizeDataInterface {
+            private JsonStringSanitizeData $jsonStringSanitizeData;
+
+            public function __construct(JsonStringSanitizeData $jsonStringSanitizeData)
+            {
+                $this->jsonStringSanitizeData = $jsonStringSanitizeData;
+            }
+
+            public function sanitizeRequestData(RequestInterface $request): RequestInterface
+            {
+                return $request->withBody(Utils::streamFor(
+                    $this->jsonStringSanitizeData->sanitizeData((string) $request->getBody())
+                ));
+            }
+
+            public function sanitizeResponseData(ResponseInterface $response): ResponseInterface
+            {
+                return $response->withBody(Utils::streamFor(
+                    $this->jsonStringSanitizeData->sanitizeData((string) $response->getBody())
+                ));
+            }
+        };
     }
 }
