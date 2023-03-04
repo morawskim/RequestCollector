@@ -36,17 +36,17 @@ class GuzzleMiddlewareAcceptanceTest extends TestCase
             __DIR__ . '/_fixture/request-collector-response.txt',
             preg_replace(
                 [
-                    '/Date:.*$/m',
-                    '/^Age:.*$/m',
-                    '/^Server-Timing:.*$/m',
-                    '/^Report-To:.*$/m',
-                    '/^CF-RAY:.*$/m',
-                    '/^X-Ratelimit-Limit:.*$/m',
-                    '/^X-Ratelimit-Remaining:.*$/m',
-                    '/^X-Ratelimit-Reset:.*$/m',
+                    '/^Date:.*\n/m',
+                    '/^Age:.*\n/m',
+                    '/^Server-Timing:.*\n/m',
+                    '/^Report-To:.*\n/m',
+                    '/^CF-RAY:.*\n/m',
+                    '/^X-Ratelimit-Limit:.*\n/m',
+                    '/^X-Ratelimit-Remaining:.*\n/m',
+                    '/^X-Ratelimit-Reset:.*\n/m',
                 ],
                 '',
-                $requestCollector->getAllStoredItems()[0]->getResponse()
+                str_replace("\r", '', $requestCollector->getAllStoredItems()[0]->getResponse())
             )
         );
     }
@@ -89,14 +89,14 @@ class GuzzleMiddlewareAcceptanceTest extends TestCase
             __DIR__ . '/_fixture/guzzle-post-response.txt',
             preg_replace(
                 [
-                    '/Date:.*$/m',
-                    '/^Age:.*$/m',
-                    '/^Server-Timing:.*$/m',
-                    '/^Report-To:.*$/m',
-                    '/^CF-RAY:.*$/m',
-                    '/^X-Ratelimit-Limit:.*$/m',
-                    '/^X-Ratelimit-Remaining:.*$/m',
-                    '/^X-Ratelimit-Reset:.*$/m',
+                    '/^Date:.*\n/m',
+                    '/^Age:.*\n/m',
+                    '/^Server-Timing:.*\n/m',
+                    '/^Report-To:.*\n/m',
+                    '/^CF-RAY:.*\n/m',
+                    '/^X-Ratelimit-Limit:.*\n/m',
+                    '/^X-Ratelimit-Remaining:.*\n/m',
+                    '/^X-Ratelimit-Reset:.*\n/m',
                 ],
                 '',
                 str_replace("\r", '', $requestCollector->getAllStoredItems()[0]->getResponse())
