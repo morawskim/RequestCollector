@@ -23,10 +23,10 @@ class RequestCollector
         $this->isEnabled = false;
     }
 
-    public function store(string $request, string $response): void
+    public function store(string $request, string $response, MetadataCollection $metadata = null): void
     {
         if ($this->isEnabled) {
-            $this->requestStorage->append(new RequestResponseItem($request, $response));
+            $this->requestStorage->append(new RequestResponseItem($request, $response, $metadata ?? new MetadataCollection()));
         }
     }
 

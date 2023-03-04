@@ -20,8 +20,9 @@ class Psr3Storage implements StorageInterface
     public function store(RequestCollector $requestCollector): void
     {
         foreach ($requestCollector->getAllStoredItems() as $item) {
-            $this->logger->log($this->loglevel, $item->getRequest());
-            $this->logger->log($this->loglevel, $item->getResponse());
+            $metadata = $item->getMetadata()->toArray();
+            $this->logger->log($this->loglevel, $item->getRequest(), $metadata);
+            $this->logger->log($this->loglevel, $item->getResponse(), $metadata);
         }
     }
 }
