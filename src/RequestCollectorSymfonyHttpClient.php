@@ -12,6 +12,8 @@ class RequestCollectorSymfonyHttpClient implements HttpClientInterface
 {
     use HttpClientTrait;
 
+    public const OPTION_SKIP_REQUEST_COLLECTOR = 'skip_request_collector';
+
     private HttpClientInterface $client;
     private RequestCollector $requestCollector;
 
@@ -27,6 +29,10 @@ class RequestCollectorSymfonyHttpClient implements HttpClientInterface
 
         $options['body'] = self::getBodyAsString($options['body']);
         $response = $this->client->request($method, $url, $options);
+
+        if (true === ($options['extra'][self::OPTION_SKIP_REQUEST_COLLECTOR] ?? null)) {
+            return $response;
+        }
 
         $this->requestCollector->store(
             $method . ' ' . $url . "\n" . implode("\n", $options['headers'])  . "\n\n". $options['body'],

@@ -7,9 +7,24 @@ use Symfony\Component\HttpClient\HttpClient;
 
 class RequestCollectorSymfonyHttpClientTest extends TestCase
 {
-    // todo option to disable request to collect
     // todo check 5xx/4xx status code
     // todo sanitize request/response
+
+    public function testSkipRequestCollectorOption(): void
+    {
+        $requestCollector = new RequestCollector();
+        $requestCollector->enable();
+
+        $client = new RequestCollectorSymfonyHttpClient(
+            HttpClient::create(),
+            $requestCollector
+        );
+
+        $client->request('GET', 'https://jsonplaceholder.typicode.com/users', ['extra' => [RequestCollectorSymfonyHttpClient::OPTION_SKIP_REQUEST_COLLECTOR => true]]);
+        $client->request('GET', 'https://jsonplaceholder.typicode.com/users');
+
+        $this->assertCount(1, $requestCollector->getAllStoredItems());
+    }
 
     public function testGetRequest(): void
     {
