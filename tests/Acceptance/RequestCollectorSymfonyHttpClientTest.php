@@ -2,13 +2,16 @@
 
 namespace Mmo\RequestCollector;
 
+use Mmo\RequestCollector\SanitizeData\JsonStringSanitizeData;
+use Mmo\RequestCollector\SanitizeData\SymfonyHttpClientSanitizeDataInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class RequestCollectorSymfonyHttpClientTest extends TestCase
 {
     // todo check 5xx/4xx status code
-    // todo sanitize request/response
+    // todo sanitize request
 
     public function testSkipRequestCollectorOption(): void
     {
@@ -81,6 +84,9 @@ class RequestCollectorSymfonyHttpClientTest extends TestCase
                 "email" => "Eliseo@gardner.biz",
                 "body" => "laudantium enim quasi est quidem magnam voluptate ipsam eos\ntempora quo necessitatibus\ndolor quam autem quasi\nreiciendis et nam sapiente accusantium"
             ],
+            'extra' => [
+                RequestCollectorSymfonyHttpClient::OPTION_SANITIZE_SERVICE => $this->createSymfonyHttpClientSanitizeService()
+            ]
         ]);
 
         $this->assertCount(1, $requestCollector->getAllStoredItems());
@@ -105,5 +111,26 @@ class RequestCollectorSymfonyHttpClientTest extends TestCase
                 $requestCollector->getAllStoredItems()[0]->getResponse()
             )
         );
+    }
+
+    private function createSymfonyHttpClientSanitizeService(): SymfonyHttpClientSanitizeDataInterface
+    {
+        return new class(new JsonStringSanitizeData(['email'])) implements SymfonyHttpClientSanitizeDataInterface {
+            private JsonStringSanitizeData $jsonStringSanitizeData;
+
+            public function __construct(JsonStringSanitizeData $jsonStringSanitizeData)
+            {
+                $this->jsonStringSanitizeData = $jsonStringSanitizeData;
+            }
+
+            public function sanitizeResponse(ResponseInterface $response): ResponseInterface
+            {
+                return new SymfonyHttpClientStaticResponse(
+                    $response->getStatusCode(),
+                    $response->getHeaders(false),
+                    $this->jsonStringSanitizeData->sanitizeData($response->getContent(false))
+                );
+            }
+        };
     }
 }

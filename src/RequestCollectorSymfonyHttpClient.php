@@ -2,6 +2,7 @@
 
 namespace Mmo\RequestCollector;
 
+use Mmo\RequestCollector\SanitizeData\NoOpSymfonyHttpClientSanitizeData;
 use Symfony\Component\HttpClient\Exception\TransportException;
 use Symfony\Component\HttpClient\HttpClientTrait;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -13,6 +14,7 @@ class RequestCollectorSymfonyHttpClient implements HttpClientInterface
     use HttpClientTrait;
 
     public const OPTION_SKIP_REQUEST_COLLECTOR = 'skip_request_collector';
+    public const OPTION_SANITIZE_SERVICE = 'request_collector_sanitize_service';
 
     private HttpClientInterface $client;
     private RequestCollector $requestCollector;
@@ -34,9 +36,11 @@ class RequestCollectorSymfonyHttpClient implements HttpClientInterface
             return $response;
         }
 
+        $sanitizeService = $options['extra'][self::OPTION_SANITIZE_SERVICE] ?? new NoOpSymfonyHttpClientSanitizeData();
+
         $this->requestCollector->store(
             $method . ' ' . $url . "\n" . implode("\n", $options['headers'])  . "\n\n". $options['body'],
-            $this->convertResponseToString($response)
+            $this->convertResponseToString($sanitizeService->sanitizeResponse($response))
         );
 
         return $response;
