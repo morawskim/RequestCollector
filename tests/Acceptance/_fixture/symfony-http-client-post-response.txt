@@ -1,0 +1,26 @@
+HTTP 201
+content-type: application/json; charset=utf-8
+content-length: 270
+location: http://jsonplaceholder.typicode.com/comments/501
+x-powered-by: Express
+vary: Origin, X-HTTP-Method-Override, Accept-Encoding
+access-control-allow-credentials: true
+cache-control: no-cache
+pragma: no-cache
+expires: -1
+access-control-expose-headers: Location
+x-content-type-options: nosniff
+etag: W/"10e-KM5N64AyZbS8FdHtMPEGrrVNQ0g"
+via: 1.1 vegur
+cf-cache-status: DYNAMIC
+nel: {"success_fraction":0,"report_to":"cf-nel","max_age":604800}
+server: cloudflare
+alt-svc: h3=":443"; ma=86400, h3-29=":443"; ma=86400
+
+{
+  "postId": 1,
+  "id": 501,
+  "name": "id labore ex et quam laborum",
+  "email": "Eliseo@gardner.biz",
+  "body": "laudantium enim quasi est quidem magnam voluptate ipsam eos\ntempora quo necessitatibus\ndolor quam autem quasi\nreiciendis et nam sapiente accusantium"
+}

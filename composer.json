@@ -28,8 +28,9 @@
         "ext-curl": "*"
     },
     "require-dev": {
+        "ext-curl": "*",
         "guzzlehttp/guzzle": "^6.5",
         "phpunit/phpunit": "^8.5",
-        "ext-curl": "*"
+        "symfony/http-client": "^5.4"
     }
 }
