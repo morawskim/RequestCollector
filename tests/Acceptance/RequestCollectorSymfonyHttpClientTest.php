@@ -10,8 +10,6 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class RequestCollectorSymfonyHttpClientTest extends TestCase
 {
-    // todo check 5xx/4xx status code
-
     public function testSkipRequestCollectorOption(): void
     {
         $requestCollector = new RequestCollector();
@@ -112,9 +110,54 @@ class RequestCollectorSymfonyHttpClientTest extends TestCase
         );
     }
 
+    public function testClientError(): void
+    {
+        $requestCollector = new RequestCollector();
+        $requestCollector->enable();
+
+        $sut = new RequestCollectorSymfonyHttpClient(
+            HttpClient::create(),
+            $requestCollector
+        );
+
+        $sut->request('PUT', 'https://dummyjson.com/carts/0', [
+            'json' => [
+                "name" => "id labore ex et quam laborum",
+                "email" => "Eliseo@gardner.biz",
+                "body" => "laudantium enim quasi est quidem magnam voluptate ipsam eos\ntempora quo necessitatibus\ndolor quam autem quasi\nreiciendis et nam sapiente accusantium"
+            ],
+            'headers' => [
+                'Accept' => 'application/json'
+            ],
+            'extra' => [
+                RequestCollectorSymfonyHttpClient::OPTION_SANITIZE_SERVICE => $this->createSymfonyHttpClientSanitizeService()
+            ]
+        ]);
+
+        $this->assertCount(1, $requestCollector->getAllStoredItems());
+        $this->assertStringEqualsFile(
+            __DIR__ . '/_fixture/symfony-http-client-server-error-request.txt',
+            $requestCollector->getAllStoredItems()[0]->getRequest()
+        );
+        $this->assertStringEqualsFile(
+            __DIR__ . '/_fixture/symfony-http-client-server-error-response.txt',
+            preg_replace(
+                [
+                    '/^expires:.*\n/m',
+                    '/^date:.*\n/m',
+                    '/^x-ratelimit-limit:.*\n/m',
+                    '/^x-ratelimit-remaining:.*\n/m',
+                    '/^x-ratelimit-reset:.*\n/m',
+                ],
+                '',
+                $requestCollector->getAllStoredItems()[0]->getResponse()
+            )
+        );
+    }
+
     private function createSymfonyHttpClientSanitizeService(): SymfonyHttpClientSanitizeDataInterface
     {
-        return new class(new JsonStringSanitizeData(['email'])) implements SymfonyHttpClientSanitizeDataInterface {
+        return new class(new JsonStringSanitizeData(['email', 'message'])) implements SymfonyHttpClientSanitizeDataInterface {
             private JsonStringSanitizeData $jsonStringSanitizeData;
 
             public function __construct(JsonStringSanitizeData $jsonStringSanitizeData)

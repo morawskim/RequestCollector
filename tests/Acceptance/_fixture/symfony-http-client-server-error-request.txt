@@ -1,0 +1,6 @@
+PUT https://dummyjson.com/carts/0
+Accept: application/json
+Content-Type: application/json
+Content-Length: 229
+
+{"name":"id labore ex et quam laborum","email":"E****************z","body":"laudantium enim quasi est quidem magnam voluptate ipsam eos\ntempora quo necessitatibus\ndolor quam autem quasi\nreiciendis et nam sapiente accusantium"}
