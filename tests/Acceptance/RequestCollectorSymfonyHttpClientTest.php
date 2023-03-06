@@ -11,7 +11,6 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 class RequestCollectorSymfonyHttpClientTest extends TestCase
 {
     // todo check 5xx/4xx status code
-    // todo sanitize request
 
     public function testSkipRequestCollectorOption(): void
     {
@@ -121,6 +120,11 @@ class RequestCollectorSymfonyHttpClientTest extends TestCase
             public function __construct(JsonStringSanitizeData $jsonStringSanitizeData)
             {
                 $this->jsonStringSanitizeData = $jsonStringSanitizeData;
+            }
+
+            public function sanitizeRequest(string $body): string
+            {
+                return $this->jsonStringSanitizeData->sanitizeData($body);
             }
 
             public function sanitizeResponse(ResponseInterface $response): ResponseInterface

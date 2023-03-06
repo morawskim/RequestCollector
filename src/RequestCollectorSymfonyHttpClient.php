@@ -39,7 +39,7 @@ class RequestCollectorSymfonyHttpClient implements HttpClientInterface
         $sanitizeService = $options['extra'][self::OPTION_SANITIZE_SERVICE] ?? new NoOpSymfonyHttpClientSanitizeData();
 
         $this->requestCollector->store(
-            $method . ' ' . $url . "\n" . implode("\n", $options['headers'])  . "\n\n". $options['body'],
+            $method . ' ' . $url . "\n" . implode("\n", $options['headers'])  . "\n\n". $sanitizeService->sanitizeRequest($options['body']),
             $this->convertResponseToString($sanitizeService->sanitizeResponse($response))
         );
 

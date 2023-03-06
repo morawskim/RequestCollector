@@ -8,6 +8,11 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class NoOpSymfonyHttpClientSanitizeData implements SymfonyHttpClientSanitizeDataInterface
 {
+    public function sanitizeRequest(string $body): string
+    {
+        return $body;
+    }
+
     public function sanitizeResponse(ResponseInterface $response): ResponseInterface
     {
         return new SymfonyHttpClientStaticResponse(
