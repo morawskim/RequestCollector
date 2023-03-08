@@ -1,0 +1,79 @@
+name: "CI"
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+      branches:
+        - 'master'
+
+jobs:
+  tests:
+    name: "Run tests"
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php-version: [7.4, 8.0, 8.1, 8.2]
+        #scenario: ['guzzle6', 'guzzle7', 'symfony4', 'symfony5', 'symfony6']
+        scenario: ['guzzle6', 'guzzle7']
+        dependencies: ['lowest', 'highest']
+        exclude:
+          # problems with phpunit (too old)
+          - php-version: 8.1
+            scenario: 'guzzle6'
+            dependencies: 'lowest'
+          - php-version: 8.1
+            scenario: 'guzzle7'
+            dependencies: 'lowest'
+#          - php-version: 8.1
+#            scenario: 'symfony5'
+#            dependencies: 'lowest'
+#          - php-version: 8.1
+#            scenario: 'symfony6'
+#            dependencies: 'lowest'
+          - php-version: 8.2
+            scenario: 'guzzle6'
+            dependencies: 'lowest'
+          - php-version: 8.2
+            scenario: 'guzzle7'
+            dependencies: 'lowest'
+#          - php-version: 8.2
+#            scenario: 'symfony5'
+#            dependencies: 'lowest'
+#          - php-version: 8.2
+#            scenario: 'symfony6'
+#            dependencies: 'lowest'
+
+          # symfony 6.0 does not support PHP belows 8.0
+          # symfony 6.1+ supports only PHP 8.1+
+#          - php-version: 7.4
+#            scenario: 'symfony6'
+#            dependencies: 'lowest'
+#          - php-version: 7.4
+#            scenario: 'symfony6'
+#            dependencies: 'highest'
+#
+#          - php-version: 8.0
+#            scenario: 'symfony6'
+#            dependencies: 'lowest'
+#          - php-version: 8.0
+#            scenario: 'symfony6'
+#            dependencies: 'highest'
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@v3"
+      - name: "Install PHP"
+        uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: "${{ matrix.php-version }}"
+          coverage: "xdebug"
+          tools: composer
+      - name: "Print php and composer version"
+        run: |
+          php --version
+          composer --version
+      - name: "composer install"
+        run: .scenarios.lock/install "${{ matrix.scenario }}" "${{ matrix.dependencies }}"
+      - name: "Run phpunit"
+        run: php -dxdebug.mode=coverage vendor/bin/phpunit --verbose --coverage-clover=coverage.xml

@@ -1,15 +1,11 @@
 {
     "name": "mmo/request-collector",
+    "description": "Library to collect the request/response sent via Symfony HttpClient or Guzzle",
     "type": "library",
     "license": "MIT",
     "autoload": {
         "psr-4": {
             "Mmo\\RequestCollector\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Mmo\\RequestCollector\\": ["tests/Unit", "tests/Acceptance"]
         }
     },
     "authors": [
@@ -29,8 +25,58 @@
     },
     "require-dev": {
         "ext-curl": "*",
+        "g1a/composer-test-scenarios": "^3.2",
         "guzzlehttp/guzzle": "^6.5",
         "phpunit/phpunit": "^8.5",
         "symfony/http-client": "^5.4"
+    },
+    "extra": {
+        "scenarios": {
+            "symfony4": {
+                "require-dev": {
+                    "symfony/http-client": "^4.0"
+                },
+                "scenario-options": {
+                    "create-lockfile": "false"
+                }
+            },
+            "symfony5": {
+                "require-dev": {
+                    "symfony/http-client": "^5.4"
+                },
+                "scenario-options": {
+                    "create-lockfile": "false"
+                }
+            },
+            "symfony6": {
+                "require-dev": {
+                    "symfony/http-client": "^6.0"
+                },
+                "scenario-options": {
+                    "create-lockfile": "false"
+                }
+            },
+            "guzzle6": {
+                "require-dev": {
+                    "guzzlehttp/guzzle": "^6.5"
+                },
+                "scenario-options": {
+                    "create-lockfile": "false"
+                }
+            },
+            "guzzle7": {
+                "require-dev": {
+                    "guzzlehttp/guzzle": "^7.0"
+                },
+                "scenario-options": {
+                    "create-lockfile": "false"
+                }
+            }
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "g1a/composer-test-scenarios": true
+        }
     }
 }

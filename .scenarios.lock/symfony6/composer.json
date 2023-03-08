@@ -1,0 +1,39 @@
+{
+    "name": "mmo/request-collector",
+    "description": "Library to collect the request/response sent via Symfony HttpClient or Guzzle",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Mmo\\RequestCollector\\": "../../src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Marcin Morawski",
+            "email": "marcin@morawskim.pl"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": "^7.4|^8.0",
+        "ext-mbstring": "*",
+        "psr/log": "^1|^2|^3"
+    },
+    "suggest": {
+        "ext-curl": "*"
+    },
+    "require-dev": {
+        "symfony/http-client": "^6.0",
+        "ext-curl": "*",
+        "g1a/composer-test-scenarios": "^3.2",
+        "guzzlehttp/guzzle": "^6.5",
+        "phpunit/phpunit": "^8.5"
+    },
+    "config": {
+        "allow-plugins": {
+            "g1a/composer-test-scenarios": true
+        },
+        "vendor-dir": "../../vendor"
+    }
+}
