@@ -6,8 +6,8 @@ use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
-use GuzzleHttp\Psr7\Utils;
 use Mmo\RequestCollector\SanitizeData\PsrMessageSanitizeDataInterface;
+use Mmo\RequestCollector\Test\GuzzleUtils;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -81,13 +81,13 @@ class GuzzleMiddlewareTest extends TestCase
         $fakeSanitizeService = new class implements PsrMessageSanitizeDataInterface {
             public function sanitizeRequestData(RequestInterface $request): RequestInterface
             {
-                return $request->withBody(Utils::streamFor('SANITIZED'));
+                return $request->withBody(GuzzleUtils::streamFor('SANITIZED'));
 
             }
 
             public function sanitizeResponseData(ResponseInterface $response): ResponseInterface
             {
-                return $response->withBody(Utils::streamFor('SANITIZED'));
+                return $response->withBody(GuzzleUtils::streamFor('SANITIZED'));
             }
         };
 

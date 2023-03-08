@@ -4,9 +4,9 @@ namespace Mmo\RequestCollector;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
-use GuzzleHttp\Psr7\Utils;
 use Mmo\RequestCollector\SanitizeData\JsonStringSanitizeData;
 use Mmo\RequestCollector\SanitizeData\PsrMessageSanitizeDataInterface;
+use Mmo\RequestCollector\Test\GuzzleUtils;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -29,7 +29,7 @@ class GuzzleMiddlewareAcceptanceTest extends TestCase
 
         $this->assertStringEqualsFile(
             __DIR__ . '/_fixture/request-collector-request.txt',
-            $requestCollector->getAllStoredItems()[0]->getRequest()
+            str_replace("\r", '', $requestCollector->getAllStoredItems()[0]->getRequest())
         );
 
         $this->assertStringEqualsFile(
@@ -125,14 +125,14 @@ class GuzzleMiddlewareAcceptanceTest extends TestCase
 
             public function sanitizeRequestData(RequestInterface $request): RequestInterface
             {
-                return $request->withBody(Utils::streamFor(
+                return $request->withBody(GuzzleUtils::streamFor(
                     $this->jsonStringSanitizeData->sanitizeData((string) $request->getBody())
                 ));
             }
 
             public function sanitizeResponseData(ResponseInterface $response): ResponseInterface
             {
-                return $response->withBody(Utils::streamFor(
+                return $response->withBody(GuzzleUtils::streamFor(
                     $this->jsonStringSanitizeData->sanitizeData((string) $response->getBody())
                 ));
             }
