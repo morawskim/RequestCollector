@@ -24,7 +24,7 @@
         "ext-curl": "*"
     },
     "require-dev": {
-        "symfony/http-client": "^4.0",
+        "symfony/http-client": "^4.4.20",
         "ext-curl": "*",
         "g1a/composer-test-scenarios": "^3.2",
         "guzzlehttp/guzzle": "^6.5",

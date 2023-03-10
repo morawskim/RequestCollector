@@ -28,13 +28,13 @@
         "g1a/composer-test-scenarios": "^3.2",
         "guzzlehttp/guzzle": "^6.5",
         "phpunit/phpunit": "^8.5.33",
-        "symfony/http-client": "^5.4"
+        "symfony/http-client": "^4.4.20|^5.4|^6.0"
     },
     "extra": {
         "scenarios": {
             "symfony4": {
                 "require-dev": {
-                    "symfony/http-client": "^4.0"
+                    "symfony/http-client": "^4.4.20"
                 },
                 "scenario-options": {
                     "create-lockfile": "false"

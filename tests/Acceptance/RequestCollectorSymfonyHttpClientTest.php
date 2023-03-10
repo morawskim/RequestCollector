@@ -25,6 +25,10 @@ class RequestCollectorSymfonyHttpClientTest extends TestCase
         if (('5' === $sfVersionMain) && -1 === version_compare($sfVersion, '5.4.5')) {
             $this->sfHttpClientWithoutContentLength = true;
         }
+
+        if (('4' === $sfVersionMain) && -1 === version_compare($sfVersion, '4.4.38')) {
+            $this->sfHttpClientWithoutContentLength = true;
+        }
     }
 
     public function testSkipRequestCollectorOption(): void
