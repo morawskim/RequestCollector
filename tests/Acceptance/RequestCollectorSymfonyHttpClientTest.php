@@ -2,6 +2,7 @@
 
 namespace Mmo\RequestCollector;
 
+use Composer\InstalledVersions;
 use Mmo\RequestCollector\SanitizeData\JsonStringSanitizeData;
 use Mmo\RequestCollector\SanitizeData\SymfonyHttpClientSanitizeDataInterface;
 use PHPUnit\Framework\TestCase;
@@ -10,9 +11,20 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class RequestCollectorSymfonyHttpClientTest extends TestCase
 {
+    private bool $sfHttpClientWithoutContentLength = false;
+
     protected function setUp(): void
     {
-        $this->markTestSkipped('Skipped due to problems with some symfony/http-client versions');
+        $sfVersion = InstalledVersions::getVersion('symfony/http-client');
+        $sfVersionMain = $sfVersion[0];
+
+        if (('6' === $sfVersionMain) && -1 === version_compare($sfVersion, '6.0.5')) {
+            $this->sfHttpClientWithoutContentLength = true;
+        }
+
+        if (('5' === $sfVersionMain) && -1 === version_compare($sfVersion, '5.4.5')) {
+            $this->sfHttpClientWithoutContentLength = true;
+        }
     }
 
     public function testSkipRequestCollectorOption(): void
@@ -93,7 +105,9 @@ class RequestCollectorSymfonyHttpClientTest extends TestCase
 
         $this->assertCount(1, $requestCollector->getAllStoredItems());
         $this->assertStringEqualsFile(
-            __DIR__ . '/_fixture/symfony-http-client-post-request.txt',
+            $this->sfHttpClientWithoutContentLength
+                ? __DIR__ . '/_fixture/symfony-http-client-post-request-without-content-length-header.txt'
+                : __DIR__ . '/_fixture/symfony-http-client-post-request.txt',
             $requestCollector->getAllStoredItems()[0]->getRequest()
         );
         $this->assertStringEqualsFile(
@@ -141,7 +155,9 @@ class RequestCollectorSymfonyHttpClientTest extends TestCase
 
         $this->assertCount(1, $requestCollector->getAllStoredItems());
         $this->assertStringEqualsFile(
-            __DIR__ . '/_fixture/symfony-http-client-server-error-request.txt',
+            $this->sfHttpClientWithoutContentLength
+                ? __DIR__ . '/_fixture/symfony-http-client-server-error-request-without-content-length-header.txt'
+                : __DIR__ . '/_fixture/symfony-http-client-server-error-request.txt',
             $requestCollector->getAllStoredItems()[0]->getRequest()
         );
         $this->assertStringEqualsFile(
