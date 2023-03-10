@@ -27,7 +27,7 @@
         "guzzlehttp/guzzle": "^7.0",
         "ext-curl": "*",
         "g1a/composer-test-scenarios": "^3.2",
-        "phpunit/phpunit": "^8.5",
+        "phpunit/phpunit": "^8.5.33",
         "symfony/http-client": "^5.4"
     },
     "config": {

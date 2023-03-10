@@ -20,29 +20,11 @@ jobs:
         dependencies: ['lowest', 'highest']
         exclude:
           # problems with phpunit (too old)
-          - php-version: 8.1
-            scenario: 'guzzle6'
-            dependencies: 'lowest'
-          - php-version: 8.1
-            scenario: 'guzzle7'
-            dependencies: 'lowest'
 #          - php-version: 8.1
 #            scenario: 'symfony5'
 #            dependencies: 'lowest'
-#          - php-version: 8.1
-#            scenario: 'symfony6'
-#            dependencies: 'lowest'
-          - php-version: 8.2
-            scenario: 'guzzle6'
-            dependencies: 'lowest'
-          - php-version: 8.2
-            scenario: 'guzzle7'
-            dependencies: 'lowest'
 #          - php-version: 8.2
 #            scenario: 'symfony5'
-#            dependencies: 'lowest'
-#          - php-version: 8.2
-#            scenario: 'symfony6'
 #            dependencies: 'lowest'
 
           # symfony 6.0 does not support PHP belows 8.0
