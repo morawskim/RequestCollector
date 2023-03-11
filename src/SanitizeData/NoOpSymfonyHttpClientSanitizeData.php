@@ -2,8 +2,8 @@
 
 namespace Mmo\RequestCollector\SanitizeData;
 
-use Mmo\RequestCollector\SymfonyHttpClientStaticResponse;
-use Mmo\RequestCollector\SymfonyHttpClientStaticResponseLegacy;
+use Mmo\RequestCollector\SymfonyHttpClient\SymfonyHttpClientStaticResponse;
+use Mmo\RequestCollector\SymfonyHttpClient\SymfonyHttpClientStaticResponseLegacy;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class NoOpSymfonyHttpClientSanitizeData implements SymfonyHttpClientSanitizeDataInterface

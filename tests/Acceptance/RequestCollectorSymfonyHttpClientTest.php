@@ -5,6 +5,8 @@ namespace Mmo\RequestCollector;
 use Composer\InstalledVersions;
 use Mmo\RequestCollector\SanitizeData\JsonStringSanitizeData;
 use Mmo\RequestCollector\SanitizeData\SymfonyHttpClientSanitizeDataInterface;
+use Mmo\RequestCollector\SymfonyHttpClient\RequestCollectorSymfonyHttpClient;
+use Mmo\RequestCollector\SymfonyHttpClient\SymfonyHttpClientStaticResponse;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\ResponseInterface;

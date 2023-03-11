@@ -1,11 +1,12 @@
 <?php
 
-namespace Mmo\RequestCollector;
+namespace Mmo\RequestCollector\Guzzle;
 
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
+use Mmo\RequestCollector\RequestCollector;
 use Mmo\RequestCollector\SanitizeData\PsrMessageSanitizeDataInterface;
 use Mmo\RequestCollector\Test\GuzzleUtils;
 use PHPUnit\Framework\TestCase;

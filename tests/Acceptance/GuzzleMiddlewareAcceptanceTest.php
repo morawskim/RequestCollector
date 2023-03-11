@@ -4,6 +4,7 @@ namespace Mmo\RequestCollector;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
+use Mmo\RequestCollector\Guzzle\GuzzleMiddleware;
 use Mmo\RequestCollector\SanitizeData\JsonStringSanitizeData;
 use Mmo\RequestCollector\SanitizeData\PsrMessageSanitizeDataInterface;
 use Mmo\RequestCollector\Test\GuzzleUtils;

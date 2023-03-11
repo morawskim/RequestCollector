@@ -1,11 +1,11 @@
 <?php
 
-namespace Mmo\RequestCollector;
+namespace Mmo\RequestCollector\SymfonyHttpClient;
 
 use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
-class SymfonyHttpClientStaticResponseLegacy implements ResponseInterface
+class SymfonyHttpClientStaticResponse implements ResponseInterface
 {
     private int $statusCode;
     private array $headers;
@@ -43,7 +43,7 @@ class SymfonyHttpClientStaticResponseLegacy implements ResponseInterface
     {
     }
 
-    public function getInfo(string $type = null)
+    public function getInfo(string $type = null): mixed
     {
         return null;
     }

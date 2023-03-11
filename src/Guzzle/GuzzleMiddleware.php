@@ -1,10 +1,11 @@
 <?php
 
-namespace Mmo\RequestCollector;
+namespace Mmo\RequestCollector\Guzzle;
 
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\MessageFormatter;
 use GuzzleHttp\Promise\Create;
+use Mmo\RequestCollector\RequestCollector;
 use Mmo\RequestCollector\SanitizeData\NoOpPsrMessageSanitizeData;
 use Mmo\RequestCollector\SanitizeData\PsrMessageSanitizeDataInterface;
 

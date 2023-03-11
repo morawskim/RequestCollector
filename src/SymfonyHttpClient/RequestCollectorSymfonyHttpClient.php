@@ -1,7 +1,8 @@
 <?php
 
-namespace Mmo\RequestCollector;
+namespace Mmo\RequestCollector\SymfonyHttpClient;
 
+use Mmo\RequestCollector\RequestCollector;
 use Mmo\RequestCollector\SanitizeData\NoOpSymfonyHttpClientSanitizeData;
 use Symfony\Component\HttpClient\Exception\TransportException;
 use Symfony\Component\HttpClient\HttpClientTrait;
