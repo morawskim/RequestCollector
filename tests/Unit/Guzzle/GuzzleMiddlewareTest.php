@@ -7,6 +7,7 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Mmo\RequestCollector\RequestCollector;
+use Mmo\RequestCollector\SanitizeData\MaskString;
 use Mmo\RequestCollector\SanitizeData\PsrMessageSanitizeDataInterface;
 use Mmo\RequestCollector\Test\GuzzleUtils;
 use PHPUnit\Framework\TestCase;
@@ -73,7 +74,7 @@ class GuzzleMiddlewareTest extends TestCase
 
     public function testCustomSanitizeService(): void
     {
-        $expectedRequest = "PUT / HTTP/1.1\r\nHost: www.google.com\r\nX-Foo: Bar\r\n\r\nSANITIZED\n\nERROR:\n--------\nNULL";
+        $expectedRequest = "PUT / HTTP/1.1\r\nHost: www.google.com\r\nX-Foo: Bar\r\nAuthorization: B********************n\r\n\r\nSANITIZED\n\nERROR:\n--------\nNULL";
         $expectedResponse = "HTTP/1.1 200 OK\r\n\r\nSANITIZED\n\nERROR:\n--------\nNULL";
 
         $requestCollector = new RequestCollector();
@@ -82,6 +83,12 @@ class GuzzleMiddlewareTest extends TestCase
         $fakeSanitizeService = new class implements PsrMessageSanitizeDataInterface {
             public function sanitizeRequestData(RequestInterface $request): RequestInterface
             {
+                foreach (PsrMessageSanitizeDataInterface::DEFAULT_SENSITIVE_HEADERS as $header) {
+                    if ($request->hasHeader($header)) {
+                        $request = $request->withHeader($header, MaskString::scrambleValue(implode('', $request->getHeader($header))));
+                    }
+                }
+
                 return $request->withBody(GuzzleUtils::streamFor('SANITIZED'));
 
             }
@@ -97,7 +104,7 @@ class GuzzleMiddlewareTest extends TestCase
         $stack->push(GuzzleMiddleware::requestCollector($requestCollector));
         $comp = $stack->resolve();
         $promise = $comp(
-            new Request('PUT', 'https://www.google.com', ['X-Foo' => 'Bar'], 'Lorem ipsum'),
+            new Request('PUT', 'https://www.google.com', ['X-Foo' => 'Bar', 'Authorization' => 'Bearer my-secret-token'], 'Lorem ipsum'),
             [GuzzleMiddleware::GUZZLE_OPTION_SANITIZE_SERVICE => $fakeSanitizeService]
         );
         $promise->wait(false);
