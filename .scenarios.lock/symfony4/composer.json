@@ -3,9 +3,23 @@
     "description": "Library to collect the request/response sent via Symfony HttpClient or Guzzle",
     "type": "library",
     "license": "MIT",
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/morawskim/composer-test-scenarios.git"
+        }
+    ],
     "autoload": {
         "psr-4": {
             "Mmo\\RequestCollector\\": "../../src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Mmo\\RequestCollector\\": [
+                "../../tests/Unit",
+                "../../tests/Acceptance"
+            ]
         }
     },
     "authors": [
@@ -26,7 +40,7 @@
     "require-dev": {
         "symfony/http-client": "^4.4.20",
         "ext-curl": "*",
-        "g1a/composer-test-scenarios": "^3.2",
+        "g1a/composer-test-scenarios": "dev-composer-autoload-array",
         "guzzlehttp/guzzle": "^6.5",
         "phpunit/phpunit": "^8.5.33"
     },
