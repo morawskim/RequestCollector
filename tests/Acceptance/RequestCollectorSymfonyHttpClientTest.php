@@ -170,7 +170,7 @@ class RequestCollectorSymfonyHttpClientTest extends TestCase
             __DIR__ . '/_fixture/symfony-http-client-server-error-response.txt',
             preg_replace(
                 [
-                    '/^expires:.*\n/m',
+                    '/^etag:.*\n/m',
                     '/^date:.*\n/m',
                     '/^x-ratelimit-limit:.*\n/m',
                     '/^x-ratelimit-remaining:.*\n/m',

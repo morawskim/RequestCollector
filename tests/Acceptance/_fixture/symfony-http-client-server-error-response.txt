@@ -1,22 +1,14 @@
 HTTP 404
 access-control-allow-origin: *
-cache-control: private, max-age=0, must-revalidate, no-cache, no-store
-content-type: application/json; charset=utf-8
-display: staticcontent_sol
-etag: W/"28-FKSeat0Q14cFvCjXrbKXx+EfiHU-gzip"
-response: 404
-server: Cowboy
-strict-transport-security: max-age=15552000; includeSubDomains
-vary: Accept-Encoding,Origin
-via: 1.1 vegur
-x-content-type-options: nosniff
 x-dns-prefetch-control: off
-x-download-options: noopen
 x-frame-options: SAMEORIGIN
-x-middleton-display: staticcontent_sol
-x-middleton-response: 404
-x-sol: pub_site
+strict-transport-security: max-age=15552000; includeSubDomains
+x-download-options: noopen
+x-content-type-options: nosniff
 x-xss-protection: 1; mode=block
+content-type: application/json; charset=utf-8
 content-length: 40
+vary: Accept-Encoding
+server: railway
 
 {"message":"C************************d"}
