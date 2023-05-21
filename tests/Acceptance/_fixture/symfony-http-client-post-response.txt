@@ -15,7 +15,6 @@ via: 1.1 vegur
 cf-cache-status: DYNAMIC
 nel: {"success_fraction":0,"report_to":"cf-nel","max_age":604800}
 server: cloudflare
-alt-svc: h3=":443"; ma=86400, h3-29=":443"; ma=86400
 
 {
   "postId": 1,

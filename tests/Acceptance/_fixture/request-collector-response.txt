@@ -14,7 +14,6 @@ Via: 1.1 vegur
 CF-Cache-Status: HIT
 NEL: {"success_fraction":0,"report_to":"cf-nel","max_age":604800}
 Server: cloudflare
-alt-svc: h3=":443"; ma=86400, h3-29=":443"; ma=86400
 
 [
   {
