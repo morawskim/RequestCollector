@@ -13,7 +13,7 @@ class CurlAcceptanceTest extends TestCase
 {
     public function testCurlGet(): void
     {
-        $url = 'https://jsonplaceholder.typicode.com/users';
+        $url = \TestHelper::buildJsonPlaceholderUrl('/users');
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -35,7 +35,7 @@ class CurlAcceptanceTest extends TestCase
 
     public function testCurlPostWithSanitizeData(): void
     {
-        $url = 'https://jsonplaceholder.typicode.com/comments';
+        $url = \TestHelper::buildJsonPlaceholderUrl('/comments');
         $fields = [
             "postId" => 1,
             "id" => 11,

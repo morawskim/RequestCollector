@@ -22,7 +22,7 @@ class GuzzleMiddlewareAcceptanceTest extends TestCase
         $requestCollector->enable();
         $client = $this->getHttpClient($requestCollector);
 
-        $response = $client->request('GET', 'https://jsonplaceholder.typicode.com/users');
+        $response = $client->request('GET', \TestHelper::buildJsonPlaceholderUrl('/users'));
 
         $this->assertSame(200, $response->getStatusCode());
         $this->assertJsonStringEqualsJsonFile(__DIR__ . '/_fixture/jsonplaceholder-users.json', $response->getBody());
@@ -59,8 +59,8 @@ class GuzzleMiddlewareAcceptanceTest extends TestCase
         $requestCollector->enable();
         $client = $this->getHttpClient($requestCollector);
 
-        $client->request('GET', 'https://jsonplaceholder.typicode.com/users', [GuzzleMiddleware::GUZZLE_OPTION_SKIP_REQUEST_COLLECTOR => true]);
-        $client->request('GET', 'https://jsonplaceholder.typicode.com/users');
+        $client->request('GET', \TestHelper::buildJsonPlaceholderUrl('/users'), [GuzzleMiddleware::GUZZLE_OPTION_SKIP_REQUEST_COLLECTOR => true]);
+        $client->request('GET', \TestHelper::buildJsonPlaceholderUrl('/users'));
 
         $this->assertCount(1, $requestCollector->getAllStoredItems());
     }
@@ -71,7 +71,7 @@ class GuzzleMiddlewareAcceptanceTest extends TestCase
         $requestCollector->enable();
         $client = $this->getHttpClient($requestCollector);
 
-        $client->request('POST', 'https://jsonplaceholder.typicode.com/comments', [
+        $client->request('POST', \TestHelper::buildJsonPlaceholderUrl('/comments'), [
             'json' => [
                 "postId" => 1,
                 "id" => 11,

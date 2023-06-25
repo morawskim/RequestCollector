@@ -43,8 +43,8 @@ class RequestCollectorSymfonyHttpClientTest extends TestCase
             $requestCollector
         );
 
-        $client->request('GET', 'https://jsonplaceholder.typicode.com/users', ['extra' => [RequestCollectorSymfonyHttpClient::OPTION_SKIP_REQUEST_COLLECTOR => true]]);
-        $client->request('GET', 'https://jsonplaceholder.typicode.com/users');
+        $client->request('GET', \TestHelper::buildJsonPlaceholderUrl('/users'), ['extra' => [RequestCollectorSymfonyHttpClient::OPTION_SKIP_REQUEST_COLLECTOR => true]]);
+        $client->request('GET', \TestHelper::buildJsonPlaceholderUrl('/users'));
 
         $this->assertCount(1, $requestCollector->getAllStoredItems());
     }
@@ -59,7 +59,7 @@ class RequestCollectorSymfonyHttpClientTest extends TestCase
             $requestCollector
         );
 
-        $sut->request('GET', 'https://jsonplaceholder.typicode.com/users');
+        $sut->request('GET', \TestHelper::buildJsonPlaceholderUrl('/users'));
 
 
         $this->assertCount(1, $requestCollector->getAllStoredItems());
@@ -97,7 +97,7 @@ class RequestCollectorSymfonyHttpClientTest extends TestCase
             $requestCollector
         );
 
-        $sut->request('POST', 'https://jsonplaceholder.typicode.com/comments', [
+        $sut->request('POST', \TestHelper::buildJsonPlaceholderUrl('/comments'), [
             'json' => [
                 "postId" => 1,
                 "id" => 11,
