@@ -45,6 +45,7 @@ class GuzzleMiddlewareAcceptanceTest extends TestCase
                     '/^X-Ratelimit-Limit:.*\n/m',
                     '/^X-Ratelimit-Remaining:.*\n/m',
                     '/^X-Ratelimit-Reset:.*\n/m',
+                    '/^alt-svc:.*\n/m',
                 ],
                 '',
                 str_replace("\r", '', $requestCollector->getAllStoredItems()[0]->getResponse())
@@ -98,6 +99,7 @@ class GuzzleMiddlewareAcceptanceTest extends TestCase
                     '/^X-Ratelimit-Limit:.*\n/m',
                     '/^X-Ratelimit-Remaining:.*\n/m',
                     '/^X-Ratelimit-Reset:.*\n/m',
+                    '/^alt-svc:.*\n/m',
                 ],
                 '',
                 str_replace("\r", '', $requestCollector->getAllStoredItems()[0]->getResponse())

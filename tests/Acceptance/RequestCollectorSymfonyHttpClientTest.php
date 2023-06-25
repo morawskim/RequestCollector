@@ -79,6 +79,7 @@ class RequestCollectorSymfonyHttpClientTest extends TestCase
                     '/^x-ratelimit-limit:.*\n/m',
                     '/^x-ratelimit-remaining:.*\n/m',
                     '/^x-ratelimit-reset:.*\n/m',
+                    '/^alt-svc:.*\n/m',
                 ],
                 '',
                 $requestCollector->getAllStoredItems()[0]->getResponse()
@@ -128,6 +129,7 @@ class RequestCollectorSymfonyHttpClientTest extends TestCase
                     '/^x-ratelimit-limit:.*\n/m',
                     '/^x-ratelimit-remaining:.*\n/m',
                     '/^x-ratelimit-reset:.*\n/m',
+                    '/^alt-svc:.*\n/m',
                 ],
                 '',
                 $requestCollector->getAllStoredItems()[0]->getResponse()
