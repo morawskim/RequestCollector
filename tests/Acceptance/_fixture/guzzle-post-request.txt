@@ -1,7 +1,7 @@
 POST /comments HTTP/1.1
 User-Agent: RequestCollector/test
 Content-Type: application/json
-Host: jsonplaceholder.typicode.com
+Host: HOSTNAME_PLACEHOLDER
 
 {"postId":1,"id":11,"name":"id labore ex et quam laborum","email":"E****************z","body":"laudantium enim quasi est quidem magnam voluptate ipsam eos\ntempora quo necessitatibus\ndolor quam autem quasi\nreiciendis et nam sapiente accusantium"}
 

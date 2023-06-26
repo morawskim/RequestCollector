@@ -25,4 +25,14 @@ class TestHelper {
     {
         return self::getJsonPlaceholderUrl() . '/' . ltrim($path, '/');
     }
+
+    public static function replaceUrlPlaceholderWithCurrentValue(string $payload): string
+    {
+        return str_replace('JSON_PLACEHOLDER_URL', rtrim(self::getJsonPlaceholderUrl(), '/'), $payload);
+    }
+
+    public static function replaceHostnamePlaceholderWithCurrentValue(string $payload): string
+    {
+        return str_replace('HOSTNAME_PLACEHOLDER', self::getJsonPlaceholderHostname(), $payload);
+    }
 }

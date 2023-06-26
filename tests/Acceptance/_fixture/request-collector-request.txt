@@ -1,6 +1,6 @@
 GET /users HTTP/1.1
 User-Agent: RequestCollector/test
-Host: jsonplaceholder.typicode.com
+Host: HOSTNAME_PLACEHOLDER
 
 
 

@@ -28,28 +28,18 @@ class GuzzleMiddlewareAcceptanceTest extends TestCase
         $this->assertJsonStringEqualsJsonFile(__DIR__ . '/_fixture/jsonplaceholder-users.json', $response->getBody());
         $this->assertCount(1, $requestCollector->getAllStoredItems());
 
-        $this->assertStringEqualsFile(
-            __DIR__ . '/_fixture/request-collector-request.txt',
+        $this->assertEquals(
+            \TestHelper::replaceHostnamePlaceholderWithCurrentValue(file_get_contents(__DIR__ . '/_fixture/request-collector-request.txt')),
             str_replace("\r", '', $requestCollector->getAllStoredItems()[0]->getRequest())
         );
 
+
+        $this->assertStringContainsString('HTTP/1.1 200 OK', $requestCollector->getAllStoredItems()[0]->getResponse());
+        $this->assertStringContainsString('Content-Type: application/json; charset=utf-8', $requestCollector->getAllStoredItems()[0]->getResponse());
+
         $this->assertStringEqualsFile(
             __DIR__ . '/_fixture/request-collector-response.txt',
-            preg_replace(
-                [
-                    '/^Date:.*\n/m',
-                    '/^Age:.*\n/m',
-                    '/^Server-Timing:.*\n/m',
-                    '/^Report-To:.*\n/m',
-                    '/^CF-RAY:.*\n/m',
-                    '/^X-Ratelimit-Limit:.*\n/m',
-                    '/^X-Ratelimit-Remaining:.*\n/m',
-                    '/^X-Ratelimit-Reset:.*\n/m',
-                    '/^alt-svc:.*\n/m',
-                ],
-                '',
-                str_replace("\r", '', $requestCollector->getAllStoredItems()[0]->getResponse())
-            )
+            explode("\n\n", str_replace("\r", '', $requestCollector->getAllStoredItems()[0]->getResponse()), 2)[1]
         );
     }
 
@@ -83,27 +73,21 @@ class GuzzleMiddlewareAcceptanceTest extends TestCase
         ]);
 
         $this->assertCount(1, $requestCollector->getAllStoredItems());
-        $this->assertStringEqualsFile(
-            __DIR__ . '/_fixture/guzzle-post-request.txt',
+        $this->assertEquals(
+            \TestHelper::replaceHostnamePlaceholderWithCurrentValue(file_get_contents(__DIR__ . '/_fixture/guzzle-post-request.txt')),
             str_replace("\r", '', $requestCollector->getAllStoredItems()[0]->getRequest())
         );
+
+        $this->assertStringContainsString('HTTP/1.1 201 Created', $requestCollector->getAllStoredItems()[0]->getResponse());
+        $this->assertStringContainsString('Content-Type: application/json; charset=utf-8', $requestCollector->getAllStoredItems()[0]->getResponse());
+        $this->assertStringContainsString(
+            'Location: ',
+            $requestCollector->getAllStoredItems()[0]->getResponse()
+        );
+
         $this->assertStringEqualsFile(
             __DIR__ . '/_fixture/guzzle-post-response.txt',
-            preg_replace(
-                [
-                    '/^Date:.*\n/m',
-                    '/^Age:.*\n/m',
-                    '/^Server-Timing:.*\n/m',
-                    '/^Report-To:.*\n/m',
-                    '/^CF-RAY:.*\n/m',
-                    '/^X-Ratelimit-Limit:.*\n/m',
-                    '/^X-Ratelimit-Remaining:.*\n/m',
-                    '/^X-Ratelimit-Reset:.*\n/m',
-                    '/^alt-svc:.*\n/m',
-                ],
-                '',
-                str_replace("\r", '', $requestCollector->getAllStoredItems()[0]->getResponse())
-            )
+            explode("\n\n", str_replace("\r", '', $requestCollector->getAllStoredItems()[0]->getResponse()), 2)[1]
         );
     }
 

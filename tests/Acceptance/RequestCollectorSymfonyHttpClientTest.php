@@ -63,27 +63,16 @@ class RequestCollectorSymfonyHttpClientTest extends TestCase
 
 
         $this->assertCount(1, $requestCollector->getAllStoredItems());
-        $this->assertStringEqualsFile(
-            __DIR__ . '/_fixture/symfony-http-client-get-request.txt',
+        $this->assertEquals(
+            \TestHelper::replaceUrlPlaceholderWithCurrentValue(file_get_contents(__DIR__ . '/_fixture/symfony-http-client-get-request.txt')),
             $requestCollector->getAllStoredItems()[0]->getRequest()
         );
+
+        $this->assertStringContainsString('HTTP 200', $requestCollector->getAllStoredItems()[0]->getResponse());
+        $this->assertStringContainsString('content-type: application/json; charset=utf-8', $requestCollector->getAllStoredItems()[0]->getResponse());
         $this->assertStringEqualsFile(
             __DIR__ . '/_fixture/symfony-http-client-get-response.txt',
-            preg_replace(
-                [
-                    '/^date:.*\n/m',
-                    '/^age:.*\n/m',
-                    '/^server-timing:.*\n/m',
-                    '/^report-to:.*\n/m',
-                    '/^cf-ray:.*\n/m',
-                    '/^x-ratelimit-limit:.*\n/m',
-                    '/^x-ratelimit-remaining:.*\n/m',
-                    '/^x-ratelimit-reset:.*\n/m',
-                    '/^alt-svc:.*\n/m',
-                ],
-                '',
-                $requestCollector->getAllStoredItems()[0]->getResponse()
-            )
+            explode("\n\n", str_replace("\r", '', $requestCollector->getAllStoredItems()[0]->getResponse()), 2)[1]
         );
     }
 
@@ -111,29 +100,27 @@ class RequestCollectorSymfonyHttpClientTest extends TestCase
         ]);
 
         $this->assertCount(1, $requestCollector->getAllStoredItems());
-        $this->assertStringEqualsFile(
-            $this->sfHttpClientWithoutContentLength
-                ? __DIR__ . '/_fixture/symfony-http-client-post-request-without-content-length-header.txt'
-                : __DIR__ . '/_fixture/symfony-http-client-post-request.txt',
+        $this->assertEquals(
+            \TestHelper::replaceUrlPlaceholderWithCurrentValue(
+                file_get_contents(
+                    $this->sfHttpClientWithoutContentLength
+                        ? __DIR__ . '/_fixture/symfony-http-client-post-request-without-content-length-header.txt'
+                        : __DIR__ . '/_fixture/symfony-http-client-post-request.txt'
+                )
+            ),
             $requestCollector->getAllStoredItems()[0]->getRequest()
         );
+
+        $this->assertStringContainsString('HTTP 201', $requestCollector->getAllStoredItems()[0]->getResponse());
+        $this->assertStringContainsString('content-type: application/json; charset=utf-8', $requestCollector->getAllStoredItems()[0]->getResponse());
+        $this->assertStringContainsString(
+            'location: ',
+            $requestCollector->getAllStoredItems()[0]->getResponse()
+        );
+
         $this->assertStringEqualsFile(
             __DIR__ . '/_fixture/symfony-http-client-post-response.txt',
-            preg_replace(
-                [
-                    '/^date:.*\n/m',
-                    '/^age:.*\n/m',
-                    '/^server-timing:.*\n/m',
-                    '/^report-to:.*\n/m',
-                    '/^cf-ray:.*\n/m',
-                    '/^x-ratelimit-limit:.*\n/m',
-                    '/^x-ratelimit-remaining:.*\n/m',
-                    '/^x-ratelimit-reset:.*\n/m',
-                    '/^alt-svc:.*\n/m',
-                ],
-                '',
-                $requestCollector->getAllStoredItems()[0]->getResponse()
-            )
+            explode("\n\n", str_replace("\r", '', $requestCollector->getAllStoredItems()[0]->getResponse()), 2)[1]
         );
     }
 

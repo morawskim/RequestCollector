@@ -68,7 +68,10 @@ class CurlAcceptanceTest extends TestCase
         });
 
         $this->assertCount(1, $requestCollector->getAllStoredItems());
-        $this->assertStringEqualsFile(__DIR__ . '/_fixture/curl-post-request.txt', $requestCollector->getAllStoredItems()[0]->getRequest());
+        $this->assertEquals(
+            \TestHelper::replaceUrlPlaceholderWithCurrentValue(file_get_contents(__DIR__ . '/_fixture/curl-post-request.txt')),
+            $requestCollector->getAllStoredItems()[0]->getRequest()
+        );
         $this->assertStringEqualsFile(__DIR__ . '/_fixture/curl-post-response.json', $requestCollector->getAllStoredItems()[0]->getResponse());
     }
 }

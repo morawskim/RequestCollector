@@ -1,4 +1,4 @@
-POST https://jsonplaceholder.typicode.com/comments
+POST JSON_PLACEHOLDER_URL/comments
 Content-Type: application/json
 Accept: */*
 
