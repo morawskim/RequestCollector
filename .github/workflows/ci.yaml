@@ -48,3 +48,5 @@ jobs:
         run: .scenarios.lock/install "${{ matrix.scenario }}" "${{ matrix.dependencies }}"
       - name: "Run phpunit"
         run: php -dxdebug.mode=coverage vendor/bin/phpunit --verbose --coverage-clover=coverage.xml
+        env:
+          JSON_PLACEHOLDER_URL: ${{ secrets.JSON_PLACEHOLDER_URL }}
